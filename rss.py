@@ -1,7 +1,6 @@
 from collections import namedtuple
 from datetime import datetime
 import requests
-from bs4 import BeautifulSoup
 
 POSTS = dict()
 
@@ -92,7 +91,8 @@ for job in jobs:
     id = job['Id']
     link = "https://recruiting.ultipro.com/COM1019CTDI1/JobBoard/ab728dae-48cf-43af-8869-6b591e5d9495/OpportunityDetail?opportunityId="+id
     date = datetime.strptime(job['PostedDate'], "%Y-%m-%dT%H:%M:%S.%fZ")
-    POSTS[link] = Post(link, title, date)
+    if not (link in POSTS.keys()):
+        POSTS[link] = Post(link, title, date)
 
 STREAM = sorted(
     [POSTS[key] for key in POSTS.keys()], key=lambda x: x.date, reverse=True
